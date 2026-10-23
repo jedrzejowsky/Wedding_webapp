@@ -1,0 +1,2981 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Nasze Wesele – Podziel się zdjęciami i filmami</title>
+  <meta name="description" content="Księga zdjęć i filmów weselnych – dodaj swoje zdjęcia i filmy prosto z telefonu." />
+
+  <!-- Czcionki Google: Cormorant Garamond (nagłówki weselne) + Plus Jakarta Sans (czytelny UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-cream: #faf7f2;
+      --bg-card: #ffffff;
+      --text-primary: #2c2523;
+      --text-secondary: #6e6259;
+      --accent-gold: #b8925a;
+      --accent-gold-dark: #96733f;
+      --accent-gold-light: #f3ece0;
+      --border-soft: #e9e0d4;
+      --success: #2e7d5b;
+      --success-bg: #eaf5f0;
+      --error: #c94a4a;
+      --error-bg: #fdf0f0;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow-soft: 0 10px 30px rgba(44, 37, 35, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-cream);
+      background-image: radial-gradient(circle at 50% 0%, #fffdf9 0%, #faf7f2 75%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 48px;
+    }
+
+    body.no-scroll {
+      overflow: hidden;
+    }
+
+    /* Przełącznik języka PL / NL */
+    .lang-switch {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 950;
+      display: flex;
+      gap: 2px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border-soft);
+      border-radius: 999px;
+      padding: 3px;
+      box-shadow: 0 4px 14px rgba(44, 37, 35, 0.08);
+    }
+
+    .lang-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(135deg, #c39d63 0%, #9f7a42 100%);
+      color: #fff;
+    }
+
+    /* Nagłówek weselny */
+    .hero {
+      width: 100%;
+      max-width: 560px;
+      text-align: center;
+      padding: 44px 24px 20px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent-gold-dark);
+      background: var(--accent-gold-light);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .hero-names {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 44px;
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .hero-date {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 19px;
+      color: var(--accent-gold-dark);
+      margin-bottom: 14px;
+    }
+
+    .hero-subtitle {
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--text-secondary);
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    /* Główny kontener */
+    .container {
+      width: 100%;
+      max-width: 540px;
+      padding: 0 16px;
+    }
+
+    /* Nawigacja zakładek (Wgrywanie / Galeria) */
+    .tabs {
+      display: flex;
+      background: #efe9df;
+      padding: 5px;
+      border-radius: 14px;
+      margin: 18px 0 20px;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .tab-btn.active {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      box-shadow: 0 2px 8px rgba(44, 37, 35, 0.08);
+    }
+
+    /* Karty */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 7px;
+    }
+
+    .form-hint {
+      font-weight: 400;
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 13px 15px;
+      border: 1.5px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text-primary);
+      background: #fcfaf7;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+      background: #ffffff;
+    }
+
+    /* Strefa wyboru plików */
+    .dropzone {
+      border: 2px dashed var(--accent-gold);
+      background: linear-gradient(180deg, #fdfbf7 0%, #f8f2e8 100%);
+      border-radius: var(--radius-lg);
+      padding: 32px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dropzone:active {
+      transform: scale(0.99);
+    }
+
+    .dropzone-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      color: var(--accent-gold-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      box-shadow: 0 4px 12px rgba(184, 146, 90, 0.15);
+      font-size: 26px;
+    }
+
+    .dropzone-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .dropzone-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    .file-input-hidden {
+      display: none;
+    }
+
+    /* Przyciski szybkiego wyboru (Galeria / Zdjęcie / Film) */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .quick-actions .btn-secondary {
+      flex-direction: column;
+      gap: 4px;
+      padding: 12px 6px;
+      font-size: 12.5px;
+      text-align: center;
+    }
+
+    .qa-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .btn-secondary {
+      background: #f6f1e9;
+      border: 1px solid var(--border-soft);
+      color: var(--text-primary);
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-secondary:hover {
+      background: #ede4d6;
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, #c39d63 0%, #9f7a42 100%);
+      color: #ffffff;
+      border: none;
+      padding: 15px 20px;
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(159, 122, 66, 0.28);
+      transition: opacity 0.2s, transform 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-primary:not(:disabled):active {
+      transform: scale(0.99);
+    }
+
+    /* Lista wybranych plików i pasek postępu */
+    .queue-section {
+      margin-top: 20px;
+    }
+
+    .queue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    .file-item {
+      background: #fcfaf7;
+      border: 1px solid var(--border-soft);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .file-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .file-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    .file-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 7px;
+      background: #eae2d6;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #c39d63, #2e7d5b);
+      border-radius: 999px;
+      transition: width 0.2s ease;
+    }
+
+    .file-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .file-status.done {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .file-status.error {
+      color: var(--error);
+      font-weight: 600;
+    }
+
+    .remove-file-btn {
+      background: none;
+      border: none;
+      color: #9b8e82;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 2px 6px;
+      font-family: inherit;
+    }
+
+    /* Ostrzeżenie podczas wysyłania */
+    .upload-warning {
+      background: #fff8eb;
+      border: 1px solid #f2dec0;
+      color: #855d23;
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      line-height: 1.45;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    /* Galeria na żywo */
+    .gallery-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (min-width: 460px) {
+      .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .gallery-card {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #eee7dc;
+      cursor: pointer;
+      border: 1px solid var(--border-soft);
+      animation: cardIn 0.35s ease both;
+    }
+
+    .gallery-card.is-video {
+      background: linear-gradient(135deg, #3a302b 0%, #1d1815 100%);
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.25s ease;
+    }
+
+    .gallery-card:hover img {
+      transform: scale(1.04);
+    }
+
+    .gallery-badge-video {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.65);
+      color: #fff;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 18px 8px 6px;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.72));
+      color: #ffffff;
+      font-size: 11.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 36px 16px;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .load-more-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    #gallerySentinel {
+      height: 1px;
+    }
+
+    /* Przycisk PLAY dla filmów (siatka + pełny ekran) */
+    .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: transform 0.2s ease, background 0.2s ease;
+      z-index: 2;
+    }
+
+    .play-btn:hover {
+      transform: translate(-50%, -50%) scale(1.08);
+      background: rgba(184, 146, 90, 0.85);
+    }
+
+    .play-btn svg {
+      margin-left: 4px;
+      fill: currentColor;
+    }
+
+    .play-btn-sm {
+      width: 48px;
+      height: 48px;
+    }
+
+    .play-btn-sm svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .play-btn-lg {
+      width: 88px;
+      height: 88px;
+      border-width: 3px;
+    }
+
+    .play-btn-lg svg {
+      width: 34px;
+      height: 34px;
+    }
+
+    /* Lightbox (Pełny ekran w galerii) */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 17, 15, 0.96);
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .lightbox-top-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lightbox-counter {
+      font-size: 12.5px;
+      color: #d9cfbd;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .lightbox-close {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .lightbox-body {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin: 12px 0;
+      touch-action: pan-y;
+    }
+
+    .lightbox-media {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .lightbox-media img {
+      max-width: 100%;
+      max-height: 74vh;
+      border-radius: 10px;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-drag: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .lightbox-media.is-video img {
+      min-width: 240px;
+      min-height: 180px;
+      background: #2a2320;
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #fff;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 4px;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    .lightbox-nav:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .lightbox-nav:disabled {
+      opacity: 0.2;
+      cursor: default;
+    }
+
+    .lightbox-nav.prev {
+      left: 2px;
+    }
+
+    .lightbox-nav.next {
+      right: 2px;
+    }
+
+    .lightbox-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 40px;
+      height: 40px;
+      margin: -20px 0 0 -20px;
+      border: 3px solid rgba(255, 255, 255, 0.25);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      z-index: 4;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .lightbox-footer {
+      text-align: center;
+      color: #e5dec9;
+      font-size: 13.5px;
+      padding-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .lightbox-footer a {
+      display: inline-block;
+      margin-top: 8px;
+      color: #f3ece0;
+      background: rgba(255, 255, 255, 0.14);
+      padding: 8px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    /* Banner trybu konfiguracji */
+    .setup-banner {
+      background: #fff8eb;
+      border: 1.5px solid #e6c88e;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #6b4c1b;
+      line-height: 1.5;
+    }
+
+    .footer-links {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* Modal PIN */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(44, 37, 35, 0.6);
+      backdrop-filter: blur(3px);
+      z-index: 900;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      max-width: 420px;
+      width: 100%;
+      padding: 26px 22px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Miniatury w kolejce wysyłania */
+    .file-item {
+      animation: cardIn 0.3s ease both;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .file-item.is-done {
+      background: var(--success-bg);
+      border-color: #cfe6da;
+    }
+
+    .file-item.is-error {
+      background: var(--error-bg);
+      border-color: #f1caca;
+    }
+
+    .file-thumb {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--accent-gold-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .file-thumb img,
+    .file-thumb video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .file-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-info .file-name {
+      display: block;
+    }
+
+    .file-info .file-meta {
+      margin-top: 2px;
+    }
+
+    /* Licznik wysłanych plików */
+    .sent-counter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #fbf4e8 0%, #f3e6d0 100%);
+      border: 1px solid #ead9bd;
+      color: var(--accent-gold-dark);
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .sent-counter.bump {
+      animation: bump 0.5s ease;
+    }
+
+    @keyframes bump {
+      0% {
+        transform: scale(1);
+      }
+
+      40% {
+        transform: scale(1.06);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    /* Powiadomienie (toast) */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translate(-50%, 160%);
+      z-index: 1100;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: max-content;
+      max-width: calc(100% - 32px);
+      padding: 12px 12px 12px 16px;
+      border-radius: 14px;
+      background: #2c2523;
+      color: #fff;
+      font-size: 13px;
+      line-height: 1.4;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      transition: transform 0.35s cubic-bezier(0.2, 1, 0.4, 1);
+    }
+
+    .toast.show {
+      transform: translate(-50%, 0);
+    }
+
+    .toast-action {
+      border: none;
+      background: rgba(255, 255, 255, 0.14);
+      color: #f3e6d0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    /* Ekran podziękowania */
+    .thanks-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1050;
+      background: rgba(44, 37, 35, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .thanks-backdrop.open {
+      display: flex;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .thanks-box {
+      width: 100%;
+      max-width: 380px;
+      padding: 34px 24px 24px;
+      text-align: center;
+      border-radius: 24px;
+      border: 1px solid #ecdcc2;
+      background: linear-gradient(180deg, #fffdf9 0%, #faf3e8 100%);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+      animation: popIn 0.5s cubic-bezier(0.2, 1.4, 0.4, 1);
+    }
+
+    .thanks-emoji {
+      font-size: 58px;
+      line-height: 1;
+      margin-bottom: 12px;
+      animation: floaty 2.4s ease-in-out infinite;
+    }
+
+    .thanks-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 36px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .thanks-text {
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--text-secondary);
+      margin-bottom: 22px;
+    }
+
+    .thanks-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1060;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.85) translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @keyframes floaty {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(-4deg);
+      }
+
+      50% {
+        transform: translateY(-6px) rotate(4deg);
+      }
+    }
+
+    /* Polubienia ❤️ */
+    .like-btn {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 9px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      color: #fff;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .like-btn:active {
+      transform: scale(0.92);
+    }
+
+    .like-btn.liked {
+      background: rgba(201, 74, 92, 0.88);
+    }
+
+    .like-btn .heart {
+      font-size: 13px;
+      display: inline-block;
+    }
+
+    .like-btn .like-count:empty {
+      display: none;
+    }
+
+    .like-btn.pop .heart {
+      animation: heartPop 0.45s ease;
+    }
+
+    @keyframes heartPop {
+      0% {
+        transform: scale(1);
+      }
+
+      40% {
+        transform: scale(1.5);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .like-btn.static {
+      position: static;
+      padding: 8px 16px;
+      font-size: 12.5px;
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .like-btn.static.liked {
+      background: rgba(201, 74, 92, 0.88);
+    }
+
+    .gallery-card .gallery-caption {
+      padding-right: 58px;
+    }
+
+    .lightbox-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .lightbox-footer .lightbox-actions a {
+      margin-top: 0;
+    }
+
+    /* Ranking: Najlepsze zdjęcia wieczoru */
+    .top-section {
+      margin-bottom: 18px;
+    }
+
+    .top-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .top-strip {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .top-strip::-webkit-scrollbar {
+      display: none;
+    }
+
+    .top-card {
+      position: relative;
+      flex: 0 0 118px;
+      aspect-ratio: 3 / 4;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #eee7dc;
+      border: 1px solid var(--border-soft);
+      scroll-snap-align: start;
+      cursor: pointer;
+      animation: cardIn 0.35s ease both;
+    }
+
+    .top-card:first-child {
+      border: 2px solid var(--accent-gold);
+      box-shadow: 0 6px 18px rgba(184, 146, 90, 0.3);
+    }
+
+    .top-card.is-video {
+      background: linear-gradient(135deg, #3a302b 0%, #1d1815 100%);
+    }
+
+    .top-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .top-rank {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      font-size: 22px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+    }
+
+    .top-rank.num {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.55);
+      padding: 4px 7px;
+      border-radius: 999px;
+    }
+
+    .top-video {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      font-size: 10.5px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 3px 7px;
+      border-radius: 999px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =====================================================================
+       KONFIGURACJA APLIKACJI WESELNEJ (EDYTUJ TUTAJ!)
+       ===================================================================== -->
+  <script>
+    const WEDDING_CONFIG = {
+      // 1. Imiona Pary Młodej i data wyświetlane na górze strony (data i powitanie w obu językach):
+      COUPLE_NAMES: "Kamila & Oliwier",
+      WEDDING_DATE: {
+        pl: "24 października 2026",
+        nl: "24 oktober 2026"
+      },
+      WELCOME_TEXT: {
+        pl: "Kochani Goście! Pomóżcie nam uwiecznić ten wyjątkowy dzień. Wrzućcie swoje zdjęcia oraz filmy prosto ze swoich telefonów.",
+        nl: "Lieve gasten! Help ons deze bijzondere dag vast te leggen. Upload jullie foto's en video's rechtstreeks vanaf je telefoon."
+      },
+
+      // 2. Adres URL wdrożonego skryptu Google Apps Script:
+      SCRIPT_URL: "https://script.google.com/macros/s/AKfycbz7SaXAqW8FsD_YMp8XUeNAzLNjTZ2WLBYNw1hPBAGE2_WTNIaGq47Duffllaj8vWFl/exec",
+
+      // UWAGA: Kod PIN nie jest przechowywany w kodzie strony ze względów bezpieczeństwa!
+      // Weryfikuje go backend Google Apps Script. Goście wchodzą automatycznie przez link z kodu QR (?pin=...).
+
+      // 3. Domyślny język ("pl" lub "nl"). Telefony z językiem niderlandzkim dostaną automatycznie wersję NL.
+      //    Można też wymusić język w linku: ?lang=nl
+      DEFAULT_LANG: "pl",
+
+      // 4. Ile zdjęć/filmów doładowywać naraz w Galerii na żywo:
+      GALLERY_PAGE_SIZE: 20,
+
+      // 5. Rozmiar pojedynczej paczki danych przy wysyłaniu dużych filmów 4K (w bajtach):
+      CHUNK_SIZE: 16 * 1024 * 1024
+    };
+  </script>
+
+  <!-- PRZEŁĄCZNIK JĘZYKA -->
+  <div class="lang-switch" role="group" aria-label="Język / Taal">
+    <button type="button" class="lang-btn" id="langBtnPl" onclick="setLang('pl')">🇵🇱 PL</button>
+    <button type="button" class="lang-btn" id="langBtnNl" onclick="setLang('nl')">🇳🇱 NL</button>
+  </div>
+
+  <!-- NAGŁÓWEK WESELNY -->
+  <header class="hero">
+    <span class="hero-badge" data-i18n="heroBadge">Księga Zdjęć i Filmów</span>
+    <h1 class="hero-names" id="uiCoupleNames">Kamila &amp; Oliwier</h1>
+    <div class="hero-date" id="uiWeddingDate">24 października 2026</div>
+    <p class="hero-subtitle" id="uiWelcomeText"></p>
+  </header>
+
+  <main class="container">
+    <!-- Komunikat widoczny przy otwarciu bezpośrednio z dysku (file://) -->
+    <div id="fileProtocolNotice" class="setup-banner hidden"
+      style="background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); color: #b45309;"
+      data-i18n-html="fileNotice">
+    </div>
+
+    <!-- Komunikat widoczny tylko dopóki nie wkleisz swojego linku SCRIPT_URL -->
+    <div id="setupNotice" class="setup-banner hidden" data-i18n-html="setupNotice"></div>
+
+    <!-- ZAKŁADKI: DODAJ ZDJĘCIA / GALERIA NA ŻYWO -->
+    <div class="tabs">
+      <button type="button" class="tab-btn active" id="tabUploadBtn" onclick="switchTab('upload')">
+        <span>📸</span> <span data-i18n="tabUpload">Dodaj zdjęcia i filmy</span>
+      </button>
+      <button type="button" class="tab-btn" id="tabGalleryBtn" onclick="switchTab('gallery')">
+        <span>✨</span> <span data-i18n="tabGallery">Galeria na żywo</span>
+      </button>
+    </div>
+
+    <!-- WIDOK 1: WGRYWANIE ZDJĘĆ I FILMÓW 4K -->
+    <section id="viewUpload">
+      <div class="card">
+        <!-- Podpis gościa -->
+        <div class="form-group">
+          <label class="form-label" for="guestNameInput">
+            <span data-i18n="guestLabel">Kto dodaje zdjęcia?</span>
+            <span class="form-hint" data-i18n="guestHint">(opcjonalnie – podpisz się!)</span>
+          </label>
+          <input type="text" id="guestNameInput" class="input-field" data-i18n-placeholder="guestPlaceholder"
+            placeholder="np. Wujek Tomek" maxlength="50" />
+        </div>
+
+        <!-- Ukryte inputy plików:
+             - galeria: wiele plików naraz (zdjęcia + filmy)
+             - aparat: osobno zdjęcie i film, bo połączenie accept="image/*,video/*" z capture
+               powoduje na wielu telefonach otwarcie galerii zamiast aparatu -->
+        <input type="file" id="fileInputGallery" class="file-input-hidden" multiple
+          accept="image/*,video/*,.heic,.heif,.mov,.mp4" />
+        <input type="file" id="fileInputPhoto" class="file-input-hidden" accept="image/*" capture="environment" />
+        <input type="file" id="fileInputVideo" class="file-input-hidden" accept="video/*" capture="environment" />
+
+        <!-- Główna strefa kliknięcia -->
+        <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInputGallery').click()">
+          <div class="dropzone-icon">📤</div>
+          <div class="dropzone-title" data-i18n="dropTitle">Wybierz zdjęcia lub filmy</div>
+          <div class="dropzone-desc" data-i18n-html="dropDesc"></div>
+        </div>
+
+        <!-- Przyciski pomocnicze -->
+        <div class="quick-actions">
+          <button type="button" class="btn-secondary" id="btnPickGallery"
+            onclick="document.getElementById('fileInputGallery').click()">
+            <span class="qa-icon">🖼️</span><span data-i18n="btnGallery">Z galerii</span>
+          </button>
+          <button type="button" class="btn-secondary" id="btnTakePhoto"
+            onclick="document.getElementById('fileInputPhoto').click()">
+            <span class="qa-icon">📷</span><span data-i18n="btnPhoto">Zrób zdjęcie</span>
+          </button>
+          <button type="button" class="btn-secondary" id="btnRecordVideo"
+            onclick="document.getElementById('fileInputVideo').click()">
+            <span class="qa-icon">🎥</span><span data-i18n="btnVideo">Nagraj film</span>
+          </button>
+        </div>
+
+        <!-- Licznik plików wysłanych z tego telefonu -->
+        <div id="sentCounter" class="sent-counter hidden" aria-live="polite"></div>
+
+        <!-- Kolejka plików (wysyłanie rusza automatycznie po wybraniu) -->
+        <div id="queueSection" class="queue-section hidden">
+          <div class="queue-header">
+            <span id="queueCountLabel"></span>
+            <button type="button" class="remove-file-btn" id="clearQueueBtn" onclick="clearQueue()"
+              style="font-size: 12.5px;" data-i18n="clearList">
+              Wyczyść listę
+            </button>
+          </div>
+
+          <div id="uploadWarning" class="upload-warning" data-i18n-html="uploadWarning"></div>
+
+          <div id="fileListContainer"></div>
+
+          <!-- Widoczny tylko, gdy coś się nie wysłało -->
+          <button type="button" id="retryUploadBtn" class="btn-primary hidden" onclick="retryFailed()"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- WIDOK 2: WSPÓLNA GALERIA NA ŻYWO -->
+    <section id="viewGallery" class="hidden">
+      <div class="card">
+        <div class="gallery-header">
+          <div>
+            <h2 style="font-size: 17px; font-weight: 700;" data-i18n="galleryTitle">Wspólna Galeria Gości</h2>
+            <p style="font-size: 12px; color: var(--text-secondary);" data-i18n="gallerySub">
+              Zdjęcia i filmy wrzucone dzisiejszej nocy
+            </p>
+          </div>
+          <button type="button" class="btn-secondary" id="galleryRefreshBtn" onclick="loadGallery()"
+            style="padding: 8px 12px; font-size: 12.5px; white-space: nowrap;">
+            🔄 <span data-i18n="refresh">Odśwież</span>
+          </button>
+        </div>
+
+        <!-- Ranking najbardziej lubianych zdjęć -->
+        <div id="topSection" class="top-section hidden">
+          <div class="top-title">🏆 <span data-i18n="topTitle">Najlepsze zdjęcia wieczoru</span></div>
+          <div id="topStrip" class="top-strip"></div>
+        </div>
+
+        <div id="galleryStatus" class="empty-state"></div>
+
+        <div id="galleryGrid" class="gallery-grid"></div>
+
+        <!-- Doładowywanie kolejnych 20 (automatycznie przy przewijaniu lub przyciskiem) -->
+        <div id="gallerySentinel"></div>
+        <div class="load-more-wrap hidden" id="loadMoreWrap">
+          <button type="button" class="btn-secondary" id="loadMoreBtn" onclick="loadMoreGallery()"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STOPKA -->
+    <footer class="footer-links" data-i18n="footer">
+      Stworzone z ❤️ dla Pary Młodej
+    </footer>
+  </main>
+
+  <!-- MODAL: WERYFIKACJA PINU (jeśli ktoś wszedł bez kodu QR) -->
+  <div id="pinModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div style="font-size: 32px; margin-bottom: 8px;">🔒</div>
+      <h3 style="font-size: 19px; margin-bottom: 6px;" data-i18n="pinTitle">Podaj hasło weselne (PIN)</h3>
+      <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;" data-i18n="pinDesc"></p>
+      <input type="text" id="pinModalInput" class="input-field" data-i18n-placeholder="pinPlaceholder"
+        placeholder="Wpisz kod PIN..." style="text-align: center; font-weight: 600; margin-bottom: 12px;"
+        onkeydown="if(event.key === 'Enter') submitPinModal()" />
+      <div id="pinErrorMsg" style="color: var(--error); font-size: 12.5px; margin-bottom: 10px; display: none;"></div>
+      <button type="button" class="btn-primary" id="pinSubmitBtn" onclick="submitPinModal()" data-i18n="pinSubmit">
+        Przejdź do aplikacji
+      </button>
+      <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 12px; margin-bottom: 0;"
+        data-i18n="pinHint"></p>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX: PEŁNOEKRANOWY PODGLĄD Z PRZEWIJANIEM -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true">
+    <div class="lightbox-top">
+      <span id="lightboxAuthor"></span>
+      <div class="lightbox-top-right">
+        <span id="lightboxCounter" class="lightbox-counter"></span>
+        <button type="button" class="lightbox-close" id="lightboxCloseBtn" onclick="closeLightbox()">✕</button>
+      </div>
+    </div>
+    <div class="lightbox-body" id="lightboxBody">
+      <button type="button" class="lightbox-nav prev" id="lightboxPrev" onclick="lightboxStep(-1)"
+        aria-label="Previous">‹</button>
+      <div class="lightbox-media" id="lightboxMedia">
+        <img id="lightboxImg" src="" alt="" />
+        <a id="lightboxPlay" class="play-btn play-btn-lg hidden" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </a>
+      </div>
+      <div id="lightboxSpinner" class="lightbox-spinner hidden"></div>
+      <button type="button" class="lightbox-nav next" id="lightboxNext" onclick="lightboxStep(1)"
+        aria-label="Next">›</button>
+    </div>
+    <div class="lightbox-footer">
+      <div id="lightboxFileName"></div>
+      <div class="lightbox-actions">
+        <button type="button" class="like-btn static" id="lightboxLikeBtn" onclick="toggleLike(this.dataset.likeId)">
+          <span class="heart">🤍</span><span class="like-count"></span>
+        </button>
+        <a id="lightboxDriveLink" href="#" target="_blank" rel="noopener"></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EKRAN PODZIĘKOWANIA PO WYSŁANIU -->
+  <div id="thanksModal" class="thanks-backdrop" role="dialog" aria-modal="true" aria-labelledby="thanksTitle">
+    <div class="thanks-box">
+      <div class="thanks-emoji">🎉</div>
+      <h2 class="thanks-title" id="thanksTitle" data-i18n="thanksTitle">Dziękujemy!</h2>
+      <p class="thanks-text" id="thanksText"></p>
+      <div class="thanks-actions">
+        <button type="button" class="btn-primary" id="thanksMoreBtn" onclick="closeThanks(false)"
+          data-i18n="thanksMore">📸 Dodaj więcej</button>
+        <button type="button" class="btn-secondary" id="thanksGalleryBtn" onclick="closeThanks(true)"
+          data-i18n="thanksGallery">✨ Zobacz galerię</button>
+      </div>
+    </div>
+  </div>
+  <canvas id="confettiCanvas" class="hidden"></canvas>
+
+  <!-- POWIADOMIENIA (np. pominięte duplikaty) -->
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <span id="toastText"></span>
+    <button type="button" class="toast-action hidden" id="toastAction"></button>
+  </div>
+
+  <!-- =====================================================================
+       TŁUMACZENIA (PL / NL)
+       ===================================================================== -->
+  <script>
+    const I18N = {
+      pl: {
+        pageTitle: "Nasze Wesele – Podziel się zdjęciami i filmami",
+        heroBadge: "Księga Zdjęć i Filmów",
+        fileNotice: "<strong>⚠️ Otwarto plik bezpośrednio z dysku komputera (<code>file://</code>)</strong><br />Przeglądarki blokują wysyłanie plików z dysku na Google Drive (CORS).<br /><strong>Po wrzuceniu na GitHub Pages lub Netlify wszystko działa w 100%!</strong>",
+        setupNotice: "<strong>⚙️ Tryb demonstracyjny (Brak podpiętego Google Drive)</strong><br />Wklej swój link z Google Apps Script w pliku <code>index.html</code> (pole <code>SCRIPT_URL</code>).",
+        tabUpload: "Dodaj zdjęcia i filmy",
+        tabGallery: "Galeria na żywo",
+        guestLabel: "Kto dodaje zdjęcia?",
+        guestHint: "(opcjonalnie – podpisz się!)",
+        guestPlaceholder: "np. Wujek Tomek",
+        dropTitle: "Wybierz zdjęcia lub filmy",
+        dropDesc: "Możesz zaznaczyć wiele zdjęć i filmów 4K naraz – wysyłanie ruszy samo.<br />Pliki trafią w pełnej jakości na dysk Pary Młodej.",
+        btnGallery: "Z galerii",
+        btnPhoto: "Zrób zdjęcie",
+        btnVideo: "Nagraj film",
+        queueCount: "Twoje pliki ({n})",
+        clearList: "Wyczyść listę",
+        uploadWarning: "⏳ <strong>Trwa wysyłanie plików...</strong> Prosimy nie zamykać tej karty i nie blokować telefonu, dopóki pasek nie dojdzie do 100%.",
+        statusPending: "Oczekuje w kolejce...",
+        statusUploading: "Wysyłanie na Dysk Google:",
+        statusDone: "✔ Zapisano w pełnej jakości!",
+        statusError: "✖ Błąd: {msg}",
+        removeTitle: "Usuń z listy",
+        btnRetry: "🔁 Ponów nieudane ({n})",
+        sentCounter: "💛 Przesłano już {n} {files} – dziękujemy!",
+        fileOne: "plik",
+        fileFew: "pliki",
+        fileMany: "plików",
+        dupSkipped: "Pominięto duplikaty: {n} (już wysłane lub na liście).",
+        dupSendAnyway: "Wyślij mimo to",
+        thanksTitle: "Dziękujemy!",
+        thanksText: "Wysłano {n} {files} na dysk Pary Młodej. Każde zdjęcie to dla nas wspaniała pamiątka 💛",
+        thanksMore: "📸 Dodaj więcej",
+        thanksGallery: "✨ Zobacz galerię",
+        topTitle: "Najlepsze zdjęcia wieczoru",
+        likeTitle: "Polub",
+        likeError: "Nie udało się zapisać polubienia. Spróbuj ponownie.",
+        galleryTitle: "Wspólna Galeria Gości",
+        gallerySub: "Zdjęcia i filmy wrzucone dzisiejszej nocy",
+        refresh: "Odśwież",
+        galleryLoading: "⏳ Pobieranie najnowszych zdjęć i filmów...",
+        galleryEmpty: "Jeszcze nikt nie dodał zdjęć. Bądź pierwszy! 📸",
+        galleryError: "Nie udało się pobrać galerii:",
+        galleryDemo: "✨ <strong>Tryb demonstracyjny</strong><br/>Po wklejeniu linku <code>SCRIPT_URL</code> pojawią się tu zdjęcia i filmy gości!",
+        galleryNeedPin: "🔒 Podaj kod PIN, aby zobaczyć galerię.",
+        loadMore: "⬇️ Pokaż więcej",
+        loadingMore: "⏳ Ładowanie...",
+        guestDefault: "Gość weselny",
+        videoBadge: "▶ Wideo",
+        addedBy: "Dodano przez: {name}",
+        fromWedding: "Z wesela",
+        openOriginal: "Otwórz oryginał na Google Drive ↗",
+        playVideo: "Odtwórz film na Google Drive",
+        footer: "Stworzone z ❤️ dla Pary Młodej",
+        pinTitle: "Podaj hasło weselne (PIN)",
+        pinDesc: "Zeskanuj kod QR ze stołu weselnego lub wpisz kod PIN podany przez Parę Młodą:",
+        pinPlaceholder: "Wpisz kod PIN...",
+        pinError: "Nieprawidłowy kod PIN. Spróbuj ponownie.",
+        pinEmpty: "Wpisz kod PIN wesela.",
+        pinSubmit: "Przejdź do aplikacji",
+        pinVerifying: "Weryfikacja...",
+        pinHint: "💡 Wskazówka: Zeskanuj kod QR ze stołu weselnego – zalogujesz się automatycznie!",
+        errPinRequired: "Wymagany jest kod PIN wesela.",
+        errFileProtocol: "Przeglądarka blokuje wysyłanie z dysku (file://). Opublikuj stronę na GitHub Pages lub Netlify!",
+        errSession: "Nie udało się utworzyć sesji na Google Drive.",
+        errNetwork: "Przerwane połączenie sieciowe",
+        errUpload: "Błąd przesyłania ({code})",
+        errInterrupted: "Przerwano połączenie",
+        prev: "Poprzednie",
+        next: "Następne",
+        close: "Zamknij"
+      },
+      nl: {
+        pageTitle: "Onze Bruiloft – Deel je foto's en video's",
+        heroBadge: "Foto- & Videoboek",
+        fileNotice: "<strong>⚠️ Bestand direct vanaf de computer geopend (<code>file://</code>)</strong><br />Browsers blokkeren het uploaden vanaf de schijf naar Google Drive (CORS).<br /><strong>Na publicatie op GitHub Pages of Netlify werkt alles 100%!</strong>",
+        setupNotice: "<strong>⚙️ Demomodus (geen Google Drive gekoppeld)</strong><br />Plak je Google Apps Script-link in <code>index.html</code> (veld <code>SCRIPT_URL</code>).",
+        tabUpload: "Foto's & video's toevoegen",
+        tabGallery: "Live galerij",
+        guestLabel: "Wie voegt de foto's toe?",
+        guestHint: "(optioneel – zet je naam erbij!)",
+        guestPlaceholder: "bijv. Oom Jan",
+        dropTitle: "Kies foto's of video's",
+        dropDesc: "Je kunt meerdere foto's en 4K-video's tegelijk selecteren – het uploaden start vanzelf.<br />De bestanden worden in volle kwaliteit bewaard bij het bruidspaar.",
+        btnGallery: "Uit galerij",
+        btnPhoto: "Maak foto",
+        btnVideo: "Neem video op",
+        queueCount: "Jouw bestanden ({n})",
+        clearList: "Lijst wissen",
+        uploadWarning: "⏳ <strong>Bestanden worden verzonden...</strong> Sluit dit tabblad niet en vergrendel je telefoon niet totdat de balk 100% bereikt.",
+        statusPending: "Wacht in de wachtrij...",
+        statusUploading: "Uploaden naar Google Drive:",
+        statusDone: "✔ Opgeslagen in volle kwaliteit!",
+        statusError: "✖ Fout: {msg}",
+        removeTitle: "Verwijderen uit lijst",
+        btnRetry: "🔁 Mislukte opnieuw proberen ({n})",
+        sentCounter: "💛 Al {n} {files} verzonden – bedankt!",
+        fileOne: "bestand",
+        fileFew: "bestanden",
+        fileMany: "bestanden",
+        dupSkipped: "Dubbele bestanden overgeslagen: {n} (al verzonden of in de lijst).",
+        dupSendAnyway: "Toch verzenden",
+        thanksTitle: "Bedankt!",
+        thanksText: "{n} {files} verzonden naar het bruidspaar. Elke foto is een prachtige herinnering voor ons 💛",
+        thanksMore: "📸 Meer toevoegen",
+        thanksGallery: "✨ Bekijk de galerij",
+        topTitle: "Beste foto's van de avond",
+        likeTitle: "Vind ik leuk",
+        likeError: "Like opslaan mislukt. Probeer het opnieuw.",
+        galleryTitle: "Gedeelde gastengalerij",
+        gallerySub: "Foto's en video's van vanavond",
+        refresh: "Vernieuwen",
+        galleryLoading: "⏳ Nieuwste foto's en video's laden...",
+        galleryEmpty: "Nog niemand heeft foto's toegevoegd. Wees de eerste! 📸",
+        galleryError: "Galerij laden mislukt:",
+        galleryDemo: "✨ <strong>Demomodus</strong><br/>Na het invullen van <code>SCRIPT_URL</code> verschijnen hier de foto's en video's van de gasten!",
+        galleryNeedPin: "🔒 Voer de PIN-code in om de galerij te bekijken.",
+        loadMore: "⬇️ Meer tonen",
+        loadingMore: "⏳ Laden...",
+        guestDefault: "Bruiloftsgast",
+        videoBadge: "▶ Video",
+        addedBy: "Toegevoegd door: {name}",
+        fromWedding: "Van de bruiloft",
+        openOriginal: "Origineel openen op Google Drive ↗",
+        playVideo: "Video afspelen op Google Drive",
+        footer: "Gemaakt met ❤️ voor het bruidspaar",
+        pinTitle: "Voer de bruiloftscode (PIN) in",
+        pinDesc: "Scan de QR-code op de tafel of voer de PIN-code van het bruidspaar in:",
+        pinPlaceholder: "Voer PIN-code in...",
+        pinError: "Ongeldige PIN-code. Probeer het opnieuw.",
+        pinEmpty: "Voer de PIN-code in.",
+        pinSubmit: "Naar de app",
+        pinVerifying: "Controleren...",
+        pinHint: "💡 Tip: Scan de QR-code op de tafel – je wordt automatisch ingelogd!",
+        errPinRequired: "PIN-code is vereist.",
+        errFileProtocol: "De browser blokkeert uploaden vanaf de schijf (file://). Publiceer de pagina op GitHub Pages of Netlify!",
+        errSession: "Kon geen uploadsessie aanmaken op Google Drive.",
+        errNetwork: "Netwerkverbinding verbroken",
+        errUpload: "Uploadfout ({code})",
+        errInterrupted: "Verbinding verbroken",
+        prev: "Vorige",
+        next: "Volgende",
+        close: "Sluiten"
+      }
+    };
+  </script>
+
+  <!-- =====================================================================
+       LOGIKA APLIKACJI (BEZPOŚREDNI UPLOAD 4K + WZNAWIANIE + GALERIA)
+       ===================================================================== -->
+  <script>
+    let currentLang = "pl";
+    let fileQueue = [];
+    let isUploading = false;
+    let wakeLock = null;
+    let activePin = "";
+
+    // Stan galerii (stronicowanie po GALLERY_PAGE_SIZE elementów)
+    let galleryItems = [];
+    let galleryNextToken = null;
+    let galleryLoading = false;
+    let galleryLoadedOnce = false;
+    let lightboxIndex = -1;
+    let lightboxSource = "gallery"; // "gallery" | "top" – z której listy otwarto podgląd
+
+    // Ranking i polubienia
+    let topItems = [];
+    const likesInFlight = new Set();
+    const LIKED_STORAGE = "wedding_liked";
+    const UPLOADED_KEYS_STORAGE = "wedding_uploaded_keys";
+    const UPLOADED_COUNT_STORAGE = "wedding_uploaded_count";
+    let likedIds = loadStoredSet(LIKED_STORAGE);
+
+    // Wysyłanie: ile plików poszło w bieżącej serii (do ekranu podziękowania)
+    let batchDoneCount = 0;
+    let lastThanksCount = 0;
+
+    const isDemoMode = !WEDDING_CONFIG.SCRIPT_URL || WEDDING_CONFIG.SCRIPT_URL.includes("WKLEJ_TUTAJ");
+    const PAGE_SIZE = WEDDING_CONFIG.GALLERY_PAGE_SIZE || 20;
+    const PLAY_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+
+    /* ---------------------------------------------------------------------
+       TŁUMACZENIA
+       --------------------------------------------------------------------- */
+    function t(key, vars) {
+      const dict = I18N[currentLang] || I18N.pl;
+      let str = dict[key] !== undefined ? dict[key] : (I18N.pl[key] !== undefined ? I18N.pl[key] : key);
+      if (vars) {
+        Object.keys(vars).forEach((k) => {
+          str = str.replace(new RegExp("\\{" + k + "\\}", "g"), vars[k]);
+        });
+      }
+      return str;
+    }
+
+    /** Odmiana słowa „plik”: 1 plik, 2–4 pliki, 5+ plików (NL: bestand/bestanden) */
+    function filesWord(n) {
+      if (n === 1) return t("fileOne");
+      if (currentLang === "pl") {
+        const m10 = n % 10;
+        const m100 = n % 100;
+        if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return t("fileFew");
+      }
+      return t("fileMany");
+    }
+
+    function cfgText(value) {
+      if (value && typeof value === "object") {
+        return value[currentLang] || value.pl || "";
+      }
+      return value || "";
+    }
+
+    function detectLang() {
+      const urlLang = (new URLSearchParams(window.location.search).get("lang") || "").toLowerCase();
+      if (I18N[urlLang]) return urlLang;
+
+      const saved = localStorage.getItem("wedding_lang");
+      if (saved && I18N[saved]) return saved;
+
+      const browserLang = (navigator.language || "").toLowerCase();
+      if (browserLang.startsWith("nl")) return "nl";
+
+      return I18N[WEDDING_CONFIG.DEFAULT_LANG] ? WEDDING_CONFIG.DEFAULT_LANG : "pl";
+    }
+
+    function setLang(lang) {
+      if (!I18N[lang]) return;
+      currentLang = lang;
+      localStorage.setItem("wedding_lang", lang);
+      applyTranslations();
+    }
+
+    function applyTranslations() {
+      document.documentElement.lang = currentLang;
+      document.title = t("pageTitle");
+
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        el.textContent = t(el.dataset.i18n);
+      });
+      document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+        el.innerHTML = t(el.dataset.i18nHtml);
+      });
+      document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+        el.placeholder = t(el.dataset.i18nPlaceholder);
+      });
+
+      document.getElementById("langBtnPl").classList.toggle("active", currentLang === "pl");
+      document.getElementById("langBtnNl").classList.toggle("active", currentLang === "nl");
+
+      document.getElementById("uiCoupleNames").textContent = WEDDING_CONFIG.COUPLE_NAMES;
+      document.getElementById("uiWeddingDate").textContent = cfgText(WEDDING_CONFIG.WEDDING_DATE);
+      document.getElementById("uiWelcomeText").textContent = cfgText(WEDDING_CONFIG.WELCOME_TEXT);
+
+      document.getElementById("lightboxPrev").setAttribute("aria-label", t("prev"));
+      document.getElementById("lightboxNext").setAttribute("aria-label", t("next"));
+      document.getElementById("lightboxCloseBtn").setAttribute("aria-label", t("close"));
+
+      // Odświeżenie dynamicznych elementów
+      renderQueue();
+      updateSentCounter(false);
+      updateLoadMore();
+      if (galleryItems.length) renderGallery();
+      if (topItems.length) renderTopStrip();
+      refreshGalleryStatusText();
+      if (lightboxIndex >= 0 && document.getElementById("lightbox").classList.contains("open")) {
+        renderLightbox();
+      }
+      if (document.getElementById("thanksModal").classList.contains("open")) {
+        renderThanksText();
+      }
+    }
+
+    /* ---------------------------------------------------------------------
+       INICJALIZACJA
+       --------------------------------------------------------------------- */
+    window.addEventListener("DOMContentLoaded", () => {
+      currentLang = detectLang();
+      localStorage.setItem("wedding_lang", currentLang);
+
+      if (isDemoMode) {
+        document.getElementById("setupNotice").classList.remove("hidden");
+      }
+
+      if (window.location.protocol === "file:") {
+        document.getElementById("fileProtocolNotice").classList.remove("hidden");
+      }
+
+      // Przywrócenie zapisanego podpisu gościa z pamięci telefonu
+      const savedGuest = localStorage.getItem("wedding_guest_name");
+      const guestInput = document.getElementById("guestNameInput");
+      if (savedGuest) {
+        guestInput.value = savedGuest;
+      }
+      guestInput.addEventListener("input", () => {
+        localStorage.setItem("wedding_guest_name", guestInput.value.trim());
+      });
+
+      // Obsługa kodu PIN z URL (?pin=...) lub localStorage
+      initPinProtection();
+
+      // Nasłuchiwanie wyboru plików
+      ["fileInputGallery", "fileInputPhoto", "fileInputVideo"].forEach((id) => {
+        document.getElementById(id).addEventListener("change", handleFilesSelected);
+      });
+
+      // Ostrzeżenie przed zamknięciem/odświeżeniem karty w trakcie wysyłania
+      window.addEventListener("beforeunload", (e) => {
+        if (!isUploading) return;
+        e.preventDefault();
+        e.returnValue = "";
+        return "";
+      });
+
+      initLightboxGestures();
+      initInfiniteScroll();
+      applyTranslations();
+    });
+
+    /* ---------------------------------------------------------------------
+       KOD PIN
+       --------------------------------------------------------------------- */
+    function initPinProtection() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlPin = urlParams.get("pin");
+      const savedPin = localStorage.getItem("wedding_pin");
+
+      if (urlPin) {
+        activePin = urlPin.trim();
+        localStorage.setItem("wedding_pin", activePin);
+        // Oczyszczamy adres URL, aby goście widzieli estetyczny link w przeglądarce
+        try {
+          const cleanUrl = window.location.origin + window.location.pathname;
+          window.history.replaceState({}, document.title, cleanUrl);
+        } catch (_) { }
+        return;
+      }
+
+      if (savedPin) {
+        activePin = savedPin.trim();
+        return;
+      }
+
+      // Brak PIN-u w adresie i pamięci – pokazujemy modal logowania
+      document.getElementById("pinModal").classList.add("open");
+    }
+
+    /**
+     * Weryfikacja PIN-u wpisanego ręcznie (sprawdzana bezpośrednio w Google Apps Script)
+     */
+    async function submitPinModal() {
+      const inputVal = document.getElementById("pinModalInput").value.trim();
+      const errorEl = document.getElementById("pinErrorMsg");
+      const submitBtn = document.getElementById("pinSubmitBtn");
+
+      if (!inputVal) {
+        errorEl.textContent = t("pinEmpty");
+        errorEl.style.display = "block";
+        return;
+      }
+
+      if (isDemoMode) {
+        acceptPin(inputVal);
+        return;
+      }
+
+      errorEl.style.display = "none";
+      submitBtn.disabled = true;
+      submitBtn.textContent = t("pinVerifying");
+
+      try {
+        const params = new URLSearchParams({ action: "gallery", pin: inputVal, pageSize: "1" });
+        const res = await fetch(`${WEDDING_CONFIG.SCRIPT_URL}?${params.toString()}`);
+        const data = await res.json();
+
+        if (data.ok) {
+          acceptPin(inputVal);
+        } else {
+          errorEl.textContent = t("pinError");
+          errorEl.style.display = "block";
+        }
+      } catch (err) {
+        // W razie problemu z połączeniem zapisujemy – serwer i tak zweryfikuje PIN przy wysyłce
+        acceptPin(inputVal);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = t("pinSubmit");
+      }
+    }
+
+    function acceptPin(pin) {
+      activePin = pin;
+      localStorage.setItem("wedding_pin", activePin);
+      document.getElementById("pinModal").classList.remove("open");
+      if (!document.getElementById("viewGallery").classList.contains("hidden")) {
+        loadGallery();
+      }
+      // Jeśli wysyłanie przerwał brak PIN-u – ponawiamy automatycznie
+      if (fileQueue.some((f) => f.status === "error")) {
+        retryFailed();
+      }
+    }
+
+    /* ---------------------------------------------------------------------
+       ZAKŁADKI
+       --------------------------------------------------------------------- */
+    function switchTab(tab) {
+      const isUpload = tab === "upload";
+      document.getElementById("tabUploadBtn").classList.toggle("active", isUpload);
+      document.getElementById("tabGalleryBtn").classList.toggle("active", !isUpload);
+      document.getElementById("viewUpload").classList.toggle("hidden", !isUpload);
+      document.getElementById("viewGallery").classList.toggle("hidden", isUpload);
+
+      if (!isUpload && !galleryLoadedOnce) {
+        loadGallery();
+      }
+    }
+
+    /* ---------------------------------------------------------------------
+       KOLEJKA PLIKÓW
+       --------------------------------------------------------------------- */
+    function handleFilesSelected(event) {
+      const files = Array.from(event.target.files || []);
+      // Reset inputu, aby można było wybrać ponownie te same pliki
+      event.target.value = "";
+      if (!files.length) return;
+
+      // Wykrywanie duplikatów: plik już wysłany z tego telefonu lub już obecny na liście
+      const uploadedKeys = loadStoredSet(UPLOADED_KEYS_STORAGE);
+      const queuedKeys = new Set(fileQueue.map((item) => fileKey(item.file)));
+      const fresh = [];
+      const duplicates = [];
+
+      files.forEach((file) => {
+        const key = fileKey(file);
+        if (uploadedKeys.has(key) || queuedKeys.has(key)) {
+          duplicates.push(file);
+        } else {
+          queuedKeys.add(key);
+          fresh.push(file);
+        }
+      });
+
+      if (duplicates.length) {
+        showToast(t("dupSkipped", { n: duplicates.length }), t("dupSendAnyway"), () => enqueueFiles(duplicates));
+      }
+      if (fresh.length) {
+        enqueueFiles(fresh);
+      }
+    }
+
+    /** Dodaje pliki do kolejki i od razu uruchamia wysyłanie */
+    function enqueueFiles(files) {
+      files.forEach((file) => {
+        const type = file.type || "";
+        const isVideo = type.startsWith("video/");
+        const canPreview = isVideo || type.startsWith("image/");
+        fileQueue.push({
+          id: "file_" + Date.now() + "_" + Math.random().toString(36).slice(2, 7),
+          file: file,
+          isVideo: isVideo,
+          previewUrl: canPreview ? URL.createObjectURL(file) : "",
+          status: "pending", // pending | uploading | done | error
+          progress: 0,
+          errorMsg: ""
+        });
+      });
+
+      renderQueue();
+      startUploadAll();
+    }
+
+    function fileKey(file) {
+      return [file.name, file.size, file.lastModified].join("|");
+    }
+
+    function releasePreview(item) {
+      if (item.previewUrl) {
+        URL.revokeObjectURL(item.previewUrl);
+        item.previewUrl = "";
+      }
+    }
+
+    /**
+     * Lista jest aktualizowana „w miejscu” (bez przerysowywania całości), żeby miniatury
+     * nie migały przy każdej aktualizacji paska postępu.
+     */
+    function renderQueue() {
+      const section = document.getElementById("queueSection");
+      const container = document.getElementById("fileListContainer");
+      const countLabel = document.getElementById("queueCountLabel");
+      const retryBtn = document.getElementById("retryUploadBtn");
+
+      document.getElementById("uploadWarning").style.display = isUploading ? "block" : "none";
+      document.getElementById("clearQueueBtn").style.display = isUploading ? "none" : "inline-block";
+
+      if (fileQueue.length === 0) {
+        section.classList.add("hidden");
+        container.innerHTML = "";
+        return;
+      }
+
+      section.classList.remove("hidden");
+      countLabel.textContent = t("queueCount", { n: fileQueue.length });
+
+      const errorCount = fileQueue.filter((item) => item.status === "error").length;
+      retryBtn.classList.toggle("hidden", isUploading || errorCount === 0);
+      retryBtn.textContent = t("btnRetry", { n: errorCount });
+
+      // Usunięcie elementów, których nie ma już w kolejce
+      const ids = new Set(fileQueue.map((item) => item.id));
+      Array.from(container.children).forEach((el) => {
+        if (!ids.has(el.dataset.id)) el.remove();
+      });
+
+      fileQueue.forEach((item) => {
+        let el = container.querySelector(`[data-id="${item.id}"]`);
+        if (!el) {
+          el = createFileItemElement(item);
+          container.appendChild(el);
+        }
+        updateFileItemElement(el, item);
+      });
+    }
+
+    function createFileItemElement(item) {
+      const el = document.createElement("div");
+      el.className = "file-item";
+      el.dataset.id = item.id;
+
+      const sizeMB = (item.file.size / (1024 * 1024)).toFixed(1);
+      const icon = item.isVideo ? "🎬" : "🖼️";
+      let preview = "";
+      if (item.previewUrl) {
+        const src = escapeHtml(item.previewUrl);
+        // Jeśli przeglądarka nie umie pokazać podglądu (np. HEIC na Androidzie), zostaje ikonka
+        preview = item.isVideo
+          ? `<video src="${src}#t=0.1" muted playsinline preload="metadata" onerror="this.remove()"></video>`
+          : `<img src="${src}" alt="" onerror="this.remove()" />`;
+      }
+
+      el.innerHTML = `
+        <div class="file-item-top">
+          <div class="file-thumb"><span>${icon}</span>${preview}</div>
+          <div class="file-info">
+            <div class="file-name">${escapeHtml(item.file.name)}</div>
+            <div class="file-meta">${sizeMB} MB</div>
+          </div>
+          <button type="button" class="remove-file-btn" onclick="removeFile('${item.id}')">✕</button>
+        </div>
+        <div class="progress-track"><div class="progress-bar"></div></div>
+        <span class="file-status"></span>
+      `;
+      return el;
+    }
+
+    function updateFileItemElement(el, item) {
+      el.classList.toggle("is-done", item.status === "done");
+      el.classList.toggle("is-error", item.status === "error");
+      el.querySelector(".progress-bar").style.width = item.progress + "%";
+
+      const statusEl = el.querySelector(".file-status");
+      statusEl.className = "file-status" +
+        (item.status === "done" ? " done" : item.status === "error" ? " error" : "");
+
+      if (item.status === "uploading") {
+        statusEl.innerHTML = `${escapeHtml(t("statusUploading"))} <strong>${item.progress}%</strong>`;
+      } else if (item.status === "done") {
+        statusEl.textContent = t("statusDone");
+      } else if (item.status === "error") {
+        statusEl.textContent = t("statusError", { msg: item.errorMsg });
+      } else {
+        statusEl.textContent = t("statusPending");
+      }
+
+      const removeBtn = el.querySelector(".remove-file-btn");
+      removeBtn.style.visibility = item.status === "uploading" ? "hidden" : "visible";
+      removeBtn.title = t("removeTitle");
+    }
+
+    /** Usuwa plik z listy – działa też w trakcie wysyłania (dla plików czekających w kolejce) */
+    function removeFile(id) {
+      const item = fileQueue.find((f) => f.id === id);
+      if (!item || item.status === "uploading") return;
+      releasePreview(item);
+      fileQueue = fileQueue.filter((f) => f.id !== id);
+      renderQueue();
+    }
+
+    function clearQueue() {
+      if (isUploading) return;
+      fileQueue.forEach(releasePreview);
+      fileQueue = [];
+      renderQueue();
+    }
+
+    /** Chowa z listy pliki już wysłane (po zamknięciu ekranu podziękowania) */
+    function clearFinished() {
+      fileQueue.filter((f) => f.status === "done").forEach(releasePreview);
+      fileQueue = fileQueue.filter((f) => f.status !== "done");
+      renderQueue();
+    }
+
+    /* ---------------------------------------------------------------------
+       LICZNIK WYSŁANYCH PLIKÓW (pamięć telefonu)
+       --------------------------------------------------------------------- */
+    function loadStoredSet(key) {
+      try {
+        return new Set(JSON.parse(localStorage.getItem(key) || "[]"));
+      } catch (_) {
+        return new Set();
+      }
+    }
+
+    function getUploadedCount() {
+      return parseInt(localStorage.getItem(UPLOADED_COUNT_STORAGE) || "0", 10) || 0;
+    }
+
+    function rememberUploaded(file) {
+      try {
+        const keys = loadStoredSet(UPLOADED_KEYS_STORAGE);
+        keys.add(fileKey(file));
+        // Pamiętamy maksymalnie 3000 ostatnich plików
+        localStorage.setItem(UPLOADED_KEYS_STORAGE, JSON.stringify(Array.from(keys).slice(-3000)));
+        localStorage.setItem(UPLOADED_COUNT_STORAGE, String(getUploadedCount() + 1));
+      } catch (_) { }
+    }
+
+    function updateSentCounter(bump) {
+      const el = document.getElementById("sentCounter");
+      const n = getUploadedCount();
+      el.classList.toggle("hidden", n === 0);
+      el.textContent = t("sentCounter", { n: n, files: filesWord(n) });
+      if (bump) {
+        el.classList.remove("bump");
+        void el.offsetWidth; // restart animacji
+        el.classList.add("bump");
+      }
+    }
+
+    /* ---------------------------------------------------------------------
+       WYSYŁANIE PLIKÓW
+       --------------------------------------------------------------------- */
+    /**
+     * Wysyła po kolei wszystkie oczekujące pliki. Pliki dodane w trakcie trafiają do tej samej
+     * kolejki – pętla za każdym razem szuka następnego „pending”, więc je też wyśle.
+     */
+    async function startUploadAll() {
+      if (isUploading) return;
+
+      isUploading = true;
+      batchDoneCount = 0;
+      renderQueue();
+
+      // Zapobiegaj uśpieniu ekranu telefonu podczas wysyłania filmów 4K
+      await requestScreenWakeLock();
+
+      let item;
+      while ((item = fileQueue.find((f) => f.status === "pending"))) {
+        // Podpis czytamy przy każdym pliku – gość może go wpisać w trakcie wysyłania
+        const guestName = document.getElementById("guestNameInput").value.trim();
+        if (guestName) {
+          localStorage.setItem("wedding_guest_name", guestName);
+        }
+
+        item.status = "uploading";
+        item.progress = 0;
+        item.errorMsg = "";
+        renderQueue();
+
+        try {
+          if (isDemoMode) {
+            await simulateDemoUpload(item);
+          } else {
+            await uploadFileDirectToDrive(item, guestName);
+          }
+          item.status = "done";
+          item.progress = 100;
+          batchDoneCount++;
+          rememberUploaded(item.file);
+          updateSentCounter(true);
+        } catch (err) {
+          console.error("Upload error:", err);
+          item.status = "error";
+          item.errorMsg = err.message || t("errInterrupted");
+        }
+
+        renderQueue();
+      }
+
+      isUploading = false;
+      releaseScreenWakeLock();
+      renderQueue();
+
+      // Galeria odświeży się przy następnym wejściu w zakładkę
+      galleryLoadedOnce = false;
+
+      const hasErrors = fileQueue.some((f) => f.status === "error");
+      if (batchDoneCount > 0 && !hasErrors) {
+        showThanks(batchDoneCount);
+      }
+    }
+
+    function retryFailed() {
+      fileQueue.forEach((f) => {
+        if (f.status === "error") {
+          f.status = "pending";
+          f.progress = 0;
+          f.errorMsg = "";
+        }
+      });
+      renderQueue();
+      startUploadAll();
+    }
+
+    /**
+     * Główny mechanizm:
+     * 1. Pobiera jednorazowy link sesji Resumable Upload z Google Apps Script
+     * 2. Wysyła plik w kawałkach (chunks) prosto na serwery Google Drive z obsługą wznawiania
+     */
+    async function uploadFileDirectToDrive(item, guestName) {
+      const file = item.file;
+
+      if (!activePin) {
+        document.getElementById("pinModal").classList.add("open");
+        throw new Error(t("errPinRequired"));
+      }
+
+      if (window.location.protocol === "file:") {
+        throw new Error(t("errFileProtocol"));
+      }
+
+      // KROK 1: Poproś Google Apps Script o link sesji Resumable Upload
+      const initResponse = await fetch(WEDDING_CONFIG.SCRIPT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8" // text/plain omija zbędny preflight CORS w Google Apps Script
+        },
+        body: JSON.stringify({
+          action: "initUpload",
+          pin: activePin,
+          fileName: file.name,
+          mimeType: file.type || "application/octet-stream",
+          fileSize: file.size,
+          guestName: guestName,
+          origin: window.location.origin
+        })
+      });
+
+      const initData = await initResponse.json();
+      if (!initData.ok || !initData.uploadUrl) {
+        throw new Error(initData.error || t("errSession"));
+      }
+
+      const uploadUrl = initData.uploadUrl;
+
+      // KROK 2: Wysyłamy plik na Google Drive w kawałkach (Resumable Chunked Upload)
+      const chunkSize = WEDDING_CONFIG.CHUNK_SIZE || (16 * 1024 * 1024);
+      let offset = 0;
+
+      while (offset < file.size) {
+        const end = Math.min(offset + chunkSize, file.size);
+        const chunk = file.slice(offset, end);
+
+        await uploadSingleChunkWithRetry(uploadUrl, chunk, offset, end, file.size, (loadedInChunk) => {
+          const totalLoaded = offset + loadedInChunk;
+          item.progress = Math.min(99, Math.round((totalLoaded / file.size) * 100));
+          renderQueue();
+        });
+
+        offset = end;
+      }
+    }
+
+    /**
+     * Wysyła pojedynczy kawałek pliku z automatycznym ponowieniem (do 3 razy) w razie zerwania LTE
+     */
+    async function uploadSingleChunkWithRetry(uploadUrl, chunkBlob, startByte, endByte, totalSize, onProgress) {
+      const maxRetries = 3;
+      let attempt = 0;
+
+      while (attempt < maxRetries) {
+        try {
+          await sendChunkXHR(uploadUrl, chunkBlob, startByte, endByte, totalSize, onProgress);
+          return;
+        } catch (err) {
+          attempt++;
+          if (attempt >= maxRetries) {
+            throw err;
+          }
+          // Odczekaj chwilę przed ponowieniem (2s, 4s...)
+          await new Promise((r) => setTimeout(r, attempt * 2000));
+        }
+      }
+    }
+
+    function sendChunkXHR(uploadUrl, chunkBlob, startByte, endByte, totalSize, onProgress) {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("PUT", uploadUrl, true);
+        xhr.setRequestHeader("Content-Range", `bytes ${startByte}-${endByte - 1}/${totalSize}`);
+
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable && onProgress) {
+            onProgress(e.loaded);
+          }
+        };
+
+        xhr.onload = () => {
+          // Google Drive zwraca 308 (Resume Incomplete) dla kolejnych części oraz 200/201 dla ostatniej części
+          if (xhr.status === 200 || xhr.status === 201 || xhr.status === 308) {
+            resolve();
+          } else {
+            reject(new Error(t("errUpload", { code: xhr.status })));
+          }
+        };
+
+        xhr.onerror = () => {
+          reject(new Error(t("errNetwork")));
+        };
+
+        xhr.send(chunkBlob);
+      });
+    }
+
+    /**
+     * Symulacja paska postępu w trybie demonstracyjnym (przed wklejeniem SCRIPT_URL)
+     */
+    function simulateDemoUpload(item) {
+      return new Promise((resolve) => {
+        let p = 0;
+        const timer = setInterval(() => {
+          p += 20;
+          item.progress = Math.min(95, p);
+          renderQueue();
+          if (p >= 100) {
+            clearInterval(timer);
+            resolve();
+          }
+        }, 220);
+      });
+    }
+
+    /* ---------------------------------------------------------------------
+       GALERIA NA ŻYWO (stronicowana po PAGE_SIZE elementów)
+       --------------------------------------------------------------------- */
+    let galleryStatusKey = null;   // aktualny komunikat statusu (do przetłumaczenia przy zmianie języka)
+    let galleryStatusExtra = "";
+
+    function setGalleryStatus(key, extra) {
+      const statusEl = document.getElementById("galleryStatus");
+      galleryStatusKey = key;
+      galleryStatusExtra = extra || "";
+      if (!key) {
+        statusEl.style.display = "none";
+        statusEl.innerHTML = "";
+        return;
+      }
+      statusEl.style.display = "block";
+      refreshGalleryStatusText();
+    }
+
+    function refreshGalleryStatusText() {
+      if (!galleryStatusKey) return;
+      const statusEl = document.getElementById("galleryStatus");
+      if (galleryStatusKey === "galleryDemo") {
+        statusEl.innerHTML = t("galleryDemo");
+      } else {
+        statusEl.textContent = t(galleryStatusKey) + (galleryStatusExtra ? " " + galleryStatusExtra : "");
+      }
+    }
+
+    async function fetchGalleryPage(pageToken) {
+      const params = new URLSearchParams({
+        action: "gallery",
+        pin: activePin || "",
+        pageSize: String(PAGE_SIZE)
+      });
+      if (pageToken) params.set("pageToken", pageToken);
+
+      const response = await fetch(`${WEDDING_CONFIG.SCRIPT_URL}?${params.toString()}`);
+      const data = await response.json();
+      if (!data.ok) {
+        throw new Error(data.error || "Error");
+      }
+      return data;
+    }
+
+    /**
+     * Ładuje galerię od nowa (pierwsze PAGE_SIZE najnowszych plików)
+     */
+    async function loadGallery() {
+      if (galleryLoading) return;
+
+      galleryItems = [];
+      galleryNextToken = null;
+      document.getElementById("galleryGrid").innerHTML = "";
+      updateLoadMore();
+
+      if (isDemoMode) {
+        setGalleryStatus("galleryDemo");
+        return;
+      }
+
+      if (!activePin) {
+        setGalleryStatus("galleryNeedPin");
+        document.getElementById("pinModal").classList.add("open");
+        return;
+      }
+
+      setGalleryStatus("galleryLoading");
+      galleryLoading = true;
+      document.getElementById("galleryRefreshBtn").disabled = true;
+
+      try {
+        const data = await fetchGalleryPage(null);
+        galleryItems = data.items || [];
+        galleryNextToken = data.nextPageToken || null;
+        galleryLoadedOnce = true;
+
+        if (galleryItems.length === 0) {
+          setGalleryStatus("galleryEmpty");
+        } else {
+          setGalleryStatus(null);
+          renderGallery();
+        }
+      } catch (err) {
+        setGalleryStatus("galleryError", err.message || String(err));
+      } finally {
+        galleryLoading = false;
+        document.getElementById("galleryRefreshBtn").disabled = false;
+        updateLoadMore();
+      }
+    }
+
+    /**
+     * Doładowuje kolejne PAGE_SIZE plików. Zwraca true, jeśli dodano nowe elementy.
+     */
+    async function loadMoreGallery() {
+      if (galleryLoading || !galleryNextToken) return false;
+
+      galleryLoading = true;
+      updateLoadMore();
+
+      try {
+        const data = await fetchGalleryPage(galleryNextToken);
+        const newItems = data.items || [];
+        const startIndex = galleryItems.length;
+
+        galleryItems = galleryItems.concat(newItems);
+        galleryNextToken = data.nextPageToken || null;
+        appendGalleryCards(newItems, startIndex);
+        return newItems.length > 0;
+      } catch (err) {
+        console.error("Gallery load more error:", err);
+        return false;
+      } finally {
+        galleryLoading = false;
+        updateLoadMore();
+      }
+    }
+
+    function updateLoadMore() {
+      const wrap = document.getElementById("loadMoreWrap");
+      const btn = document.getElementById("loadMoreBtn");
+      const show = !!galleryNextToken && galleryItems.length > 0;
+      wrap.classList.toggle("hidden", !show);
+      btn.disabled = galleryLoading;
+      btn.textContent = galleryLoading ? t("loadingMore") : t("loadMore");
+    }
+
+    /* ---------------------------------------------------------------------
+       POLUBIENIA ❤️ I RANKING ZDJĘĆ
+       --------------------------------------------------------------------- */
+    const LOCAL_LIKES_KEY = "wedding_likes_counts";
+
+    function getLocalLikesMap() {
+      try {
+        return JSON.parse(localStorage.getItem(LOCAL_LIKES_KEY) || "{}");
+      } catch (_) {
+        return {};
+      }
+    }
+
+    function getItemLikes(item) {
+      if (!item) return 0;
+      const localMap = getLocalLikesMap();
+      const base = typeof item.likes === "number" ? item.likes : 0;
+      const delta = localMap[item.id] !== undefined ? localMap[item.id] : 0;
+      return Math.max(0, base + delta);
+    }
+
+    function isItemLiked(id) {
+      return likedIds.has(id);
+    }
+
+    async function toggleLike(id) {
+      if (!id || likesInFlight.has(id)) return;
+      const currentlyLiked = isItemLiked(id);
+      const willLike = !currentlyLiked;
+
+      // Optimistic UI
+      if (willLike) {
+        likedIds.add(id);
+      } else {
+        likedIds.delete(id);
+      }
+      localStorage.setItem(LIKED_STORAGE, JSON.stringify(Array.from(likedIds)));
+
+      // Aktualizujemy lokalną deltę liczby lajków
+      const localMap = getLocalLikesMap();
+      const curDelta = localMap[id] || 0;
+      localMap[id] = curDelta + (willLike ? 1 : -1);
+      localStorage.setItem(LOCAL_LIKES_KEY, JSON.stringify(localMap));
+
+      updateLikeButtons(id, true);
+      updateTopSection();
+
+      // Wysłanie w tle do Apps Script (jeśli backend nie wspiera 'like', cichy fallback)
+      if (!isDemoMode && activePin && WEDDING_CONFIG.SCRIPT_URL) {
+        likesInFlight.add(id);
+        try {
+          await fetch(WEDDING_CONFIG.SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({
+              action: "like",
+              pin: activePin,
+              fileId: id,
+              liked: willLike
+            })
+          });
+        } catch (err) {
+          console.warn("Like sync failed (local state kept):", err);
+        } finally {
+          likesInFlight.delete(id);
+        }
+      }
+    }
+
+    function updateLikeButtons(id, animate) {
+      const isLiked = isItemLiked(id);
+      const item = galleryItems.find((f) => f.id === id) || topItems.find((f) => f.id === id);
+      const count = getItemLikes(item);
+
+      // Aktualizacja przycisków w siatce i na pasku
+      document.querySelectorAll(`.like-btn[data-like-id="${id}"]`).forEach((btn) => {
+        btn.classList.toggle("liked", isLiked);
+        const countSpan = btn.querySelector(".like-count");
+        if (countSpan) countSpan.textContent = count > 0 ? count : "";
+        const heartSpan = btn.querySelector(".heart");
+        if (heartSpan) heartSpan.textContent = isLiked ? "❤️" : "🤍";
+
+        if (animate) {
+          btn.classList.remove("pop");
+          void btn.offsetWidth;
+          btn.classList.add("pop");
+        }
+      });
+
+      // Aktualizacja przycisku w lightboxie
+      const lbBtn = document.getElementById("lightboxLikeBtn");
+      if (lbBtn && lbBtn.dataset.likeId === id) {
+        lbBtn.classList.toggle("liked", isLiked);
+        const countSpan = lbBtn.querySelector(".like-count");
+        if (countSpan) countSpan.textContent = count > 0 ? count : "";
+        const heartSpan = lbBtn.querySelector(".heart");
+        if (heartSpan) heartSpan.textContent = isLiked ? "❤️" : "🤍";
+      }
+    }
+
+    function updateTopSection() {
+      // Wybieramy zdjęcia/filmy z co najmniej 1 polubieniem, posortowane malejąco
+      const candidates = galleryItems.slice().filter((item) => getItemLikes(item) > 0);
+      candidates.sort((a, b) => getItemLikes(b) - getItemLikes(a));
+      topItems = candidates.slice(0, 8); // max 8 najlepszych zdjęć
+
+      const section = document.getElementById("topSection");
+      if (topItems.length === 0) {
+        section.classList.add("hidden");
+        return;
+      }
+      section.classList.remove("hidden");
+      renderTopStrip();
+    }
+
+    function renderTopStrip() {
+      const strip = document.getElementById("topStrip");
+      if (!strip) return;
+
+      const medals = ["🥇", "🥈", "🥉"];
+      strip.innerHTML = topItems
+        .map((item, idx) => {
+          const rankBadge = idx < 3
+            ? `<span class="top-rank">${medals[idx]}</span>`
+            : `<span class="top-rank num">#${idx + 1}</span>`;
+          const videoBadge = item.isVideo ? `<span class="top-video">▶</span>` : "";
+          const count = getItemLikes(item);
+
+          return `
+            <div class="top-card${item.isVideo ? " is-video" : ""}" onclick="openTopLightbox(${idx})">
+              <img src="${escapeHtml(item.thumbUrl)}" alt="${escapeHtml(item.name)}" loading="lazy"
+                   onerror="this.style.visibility='hidden'" />
+              ${rankBadge}
+              ${videoBadge}
+              <button type="button" class="like-btn ${isItemLiked(item.id) ? "liked" : ""}"
+                      data-like-id="${item.id}"
+                      onclick="event.stopPropagation(); toggleLike('${item.id}')"
+                      title="${escapeHtml(t("likeTitle"))}">
+                <span class="heart">${isItemLiked(item.id) ? "❤️" : "🤍"}</span>
+                <span class="like-count">${count > 0 ? count : ""}</span>
+              </button>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function openTopLightbox(index) {
+      if (index < 0 || index >= topItems.length) return;
+      lightboxSource = "top";
+      lightboxIndex = index;
+      renderLightbox();
+      document.getElementById("lightbox").classList.add("open");
+      document.body.classList.add("no-scroll");
+    }
+
+    /* ---------------------------------------------------------------------
+       GALERIA NA ŻYWO (stronicowana po PAGE_SIZE elementów)
+       --------------------------------------------------------------------- */
+    function renderGallery() {
+      document.getElementById("galleryGrid").innerHTML = "";
+      appendGalleryCards(galleryItems, 0);
+      updateTopSection();
+    }
+
+    function appendGalleryCards(items, startIndex) {
+      const html = items
+        .map((item, i) => {
+          const idx = startIndex + i;
+          const author = item.guestName && item.guestName !== "Gość weselny" ? item.guestName : t("guestDefault");
+          const liked = isItemLiked(item.id);
+          const likesCount = getItemLikes(item);
+
+          const videoParts = item.isVideo
+            ? `<span class="gallery-badge-video">${escapeHtml(t("videoBadge"))}</span>
+               <a class="play-btn play-btn-sm" href="${escapeHtml(item.viewUrl)}" target="_blank" rel="noopener"
+                  onclick="event.stopPropagation()" aria-label="${escapeHtml(t("playVideo"))}">${PLAY_SVG}</a>`
+            : "";
+
+          return `
+            <div class="gallery-card${item.isVideo ? " is-video" : ""}" onclick="openLightbox(${idx})">
+              <img src="${escapeHtml(item.thumbUrl)}" alt="${escapeHtml(item.name)}" loading="lazy"
+                   onerror="this.style.visibility='hidden'" />
+              ${videoParts}
+              <div class="gallery-caption">📸 ${escapeHtml(author)}</div>
+              <button type="button" class="like-btn ${liked ? "liked" : ""}"
+                      data-like-id="${item.id}"
+                      onclick="event.stopPropagation(); toggleLike('${item.id}')"
+                      title="${escapeHtml(t("likeTitle"))}">
+                <span class="heart">${liked ? "❤️" : "🤍"}</span>
+                <span class="like-count">${likesCount > 0 ? likesCount : ""}</span>
+              </button>
+            </div>
+          `;
+        })
+        .join("");
+
+      document.getElementById("galleryGrid").insertAdjacentHTML("beforeend", html);
+    }
+
+    /**
+     * Endless scroll – automatyczne doładowanie, gdy użytkownik dojedzie do końca siatki
+     */
+    function initInfiniteScroll() {
+      const sentinel = document.getElementById("gallerySentinel");
+      if (!("IntersectionObserver" in window)) return; // zostaje przycisk "Pokaż więcej"
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.some((e) => e.isIntersecting);
+          const galleryVisible = !document.getElementById("viewGallery").classList.contains("hidden");
+          if (visible && galleryVisible && galleryNextToken && !galleryLoading) {
+            loadMoreGallery().then(() => updateTopSection());
+          }
+        },
+        { rootMargin: "300px 0px" }
+      );
+      observer.observe(sentinel);
+    }
+
+    /* ---------------------------------------------------------------------
+       LIGHTBOX (pełny ekran + strzałki + przesuwanie palcem)
+       --------------------------------------------------------------------- */
+    function openLightbox(index) {
+      if (index < 0 || index >= galleryItems.length) return;
+      lightboxSource = "gallery";
+      lightboxIndex = index;
+      renderLightbox();
+      document.getElementById("lightbox").classList.add("open");
+      document.body.classList.add("no-scroll");
+    }
+
+    function getCurrentLightboxList() {
+      return lightboxSource === "top" ? topItems : galleryItems;
+    }
+
+    function renderLightbox() {
+      const list = getCurrentLightboxList();
+      const item = list[lightboxIndex];
+      if (!item) return;
+
+      const img = document.getElementById("lightboxImg");
+      const media = document.getElementById("lightboxMedia");
+      const play = document.getElementById("lightboxPlay");
+      const author = item.guestName && item.guestName !== "Gość weselny" ? item.guestName : "";
+
+      img.style.visibility = "visible";
+      img.onerror = () => {
+        if (img.src !== item.thumbUrl && item.thumbUrl) {
+          img.src = item.thumbUrl;
+        } else {
+          img.style.visibility = "hidden";
+        }
+      };
+      img.src = item.fullUrl || item.thumbUrl;
+      img.alt = item.name || "";
+
+      media.classList.toggle("is-video", !!item.isVideo);
+      play.classList.toggle("hidden", !item.isVideo);
+      play.href = item.viewUrl;
+      play.setAttribute("aria-label", t("playVideo"));
+      play.title = t("playVideo");
+
+      document.getElementById("lightboxAuthor").textContent = author
+        ? t("addedBy", { name: author })
+        : t("fromWedding");
+      document.getElementById("lightboxFileName").textContent = item.name || "";
+
+      // Przycisk polubienia w lightboxie
+      const likeBtn = document.getElementById("lightboxLikeBtn");
+      likeBtn.dataset.likeId = item.id;
+      const liked = isItemLiked(item.id);
+      const likesCount = getItemLikes(item);
+      likeBtn.classList.toggle("liked", liked);
+      likeBtn.querySelector(".heart").textContent = liked ? "❤️" : "🤍";
+      likeBtn.querySelector(".like-count").textContent = likesCount > 0 ? likesCount : "";
+
+      const driveLink = document.getElementById("lightboxDriveLink");
+      driveLink.href = item.viewUrl;
+      driveLink.textContent = item.isVideo ? "▶ " + t("playVideo") + " ↗" : t("openOriginal");
+
+      const hasNextMore = lightboxSource === "gallery" && galleryNextToken;
+      document.getElementById("lightboxCounter").textContent =
+        `${lightboxIndex + 1} / ${list.length}${hasNextMore ? "+" : ""}`;
+
+      document.getElementById("lightboxPrev").disabled = lightboxIndex <= 0;
+      document.getElementById("lightboxNext").disabled =
+        lightboxIndex >= list.length - 1 && !hasNextMore;
+
+      // Wstępne ładowanie sąsiednich zdjęć
+      [lightboxIndex - 1, lightboxIndex + 1].forEach((i) => {
+        const neighbour = list[i];
+        if (neighbour) {
+          const pre = new Image();
+          pre.src = neighbour.fullUrl || neighbour.thumbUrl;
+        }
+      });
+    }
+
+    async function lightboxStep(direction) {
+      const list = getCurrentLightboxList();
+      const target = lightboxIndex + direction;
+      if (target < 0) return;
+
+      if (target >= list.length) {
+        if (lightboxSource === "gallery" && galleryNextToken) {
+          const spinner = document.getElementById("lightboxSpinner");
+          spinner.classList.remove("hidden");
+          await loadMoreGallery();
+          spinner.classList.add("hidden");
+          if (target >= galleryItems.length) {
+            renderLightbox();
+            return;
+          }
+        } else {
+          return;
+        }
+      }
+
+      lightboxIndex = target;
+      renderLightbox();
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox").classList.remove("open");
+      document.getElementById("lightboxImg").src = "";
+      document.body.classList.remove("no-scroll");
+      lightboxIndex = -1;
+    }
+
+    function initLightboxGestures() {
+      const body = document.getElementById("lightboxBody");
+      let startX = 0;
+      let startY = 0;
+      let tracking = false;
+
+      body.addEventListener("click", (e) => {
+        if (e.target === body) closeLightbox();
+      });
+
+      body.addEventListener("touchstart", (e) => {
+        if (e.touches.length !== 1) return;
+        tracking = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }, { passive: true });
+
+      body.addEventListener("touchend", (e) => {
+        if (!tracking) return;
+        tracking = false;
+        const touch = e.changedTouches[0];
+        const dx = touch.clientX - startX;
+        const dy = touch.clientY - startY;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+          lightboxStep(dx < 0 ? 1 : -1);
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (!document.getElementById("lightbox").classList.contains("open")) return;
+        if (e.key === "ArrowRight") lightboxStep(1);
+        else if (e.key === "ArrowLeft") lightboxStep(-1);
+        else if (e.key === "Escape") closeLightbox();
+      });
+    }
+
+    /* ---------------------------------------------------------------------
+       TOAST (Powiadomienia)
+       --------------------------------------------------------------------- */
+    let toastTimeout = null;
+
+    function showToast(text, actionLabel, actionCallback) {
+      const toastEl = document.getElementById("toast");
+      const textEl = document.getElementById("toastText");
+      const btnEl = document.getElementById("toastAction");
+
+      textEl.textContent = text;
+      if (actionLabel && actionCallback) {
+        btnEl.textContent = actionLabel;
+        btnEl.classList.remove("hidden");
+        btnEl.onclick = () => {
+          hideToast();
+          actionCallback();
+        };
+      } else {
+        btnEl.classList.add("hidden");
+        btnEl.onclick = null;
+      }
+
+      toastEl.classList.add("show");
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(hideToast, 5000);
+    }
+
+    function hideToast() {
+      const toastEl = document.getElementById("toast");
+      toastEl.classList.remove("show");
+      clearTimeout(toastTimeout);
+    }
+
+    /* ---------------------------------------------------------------------
+       EKRAN PODZIĘKOWANIA I KONFETTI
+       --------------------------------------------------------------------- */
+    function showThanks(count) {
+      lastThanksCount = count;
+      renderThanksText();
+      const modal = document.getElementById("thanksModal");
+      modal.classList.add("open");
+      runConfetti();
+    }
+
+    function renderThanksText() {
+      const n = lastThanksCount || 1;
+      document.getElementById("thanksText").textContent =
+        t("thanksText", { n: n, files: filesWord(n) });
+    }
+
+    function closeThanks(goToGallery) {
+      const modal = document.getElementById("thanksModal");
+      modal.classList.remove("open");
+      stopConfetti();
+      clearFinished();
+      if (goToGallery) {
+        switchTab("gallery");
+      }
+    }
+
+    let confettiAnimId = null;
+
+    function runConfetti() {
+      const canvas = document.getElementById("confettiCanvas");
+      canvas.classList.remove("hidden");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const colors = ["#b8925a", "#d4af37", "#f3ece0", "#2e7d5b", "#e07a5f", "#ffffff"];
+      const particles = [];
+      const count = 90;
+
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height * 0.4 - canvas.height * 0.2,
+          w: Math.random() * 8 + 5,
+          h: Math.random() * 6 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: (Math.random() - 0.5) * 3,
+          vy: Math.random() * 3 + 2.5,
+          rotation: Math.random() * 360,
+          vrot: (Math.random() - 0.5) * 8
+        });
+      }
+
+      const start = Date.now();
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.rotation += p.vrot;
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+
+        // Konfetti trwa 3.5 sekundy
+        if (Date.now() - start < 3500) {
+          confettiAnimId = requestAnimationFrame(draw);
+        } else {
+          stopConfetti();
+        }
+      }
+      cancelAnimationFrame(confettiAnimId);
+      confettiAnimId = requestAnimationFrame(draw);
+    }
+
+    function stopConfetti() {
+      cancelAnimationFrame(confettiAnimId);
+      const canvas = document.getElementById("confettiCanvas");
+      canvas.classList.add("hidden");
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    /* ---------------------------------------------------------------------
+       NARZĘDZIA
+       --------------------------------------------------------------------- */
+    /**
+     * Blokada wygaszania ekranu (Screen Wake Lock API) podczas wgrywania dużych plików 4K
+     */
+    async function requestScreenWakeLock() {
+      try {
+        if ("wakeLock" in navigator) {
+          wakeLock = await navigator.wakeLock.request("screen");
+        }
+      } catch (_) { }
+    }
+
+    function releaseScreenWakeLock() {
+      if (wakeLock) {
+        wakeLock.release().catch(() => { });
+        wakeLock = null;
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str === undefined || str === null ? "" : str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+  </script>
+</body>
+
+</html>
